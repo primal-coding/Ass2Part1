@@ -80,8 +80,11 @@ public class DivideAndConquerAlgorithms {
 		res = m.getElement(m.length()-1);
 		m.removeElement(m.length()-1);
 		next = maxInt(m);
-		if (res > next)
+		if (res > next){
+			m.addElement(m.length(), res);
 			return res;
+		}
+		m.addElement(m.length(), res);
 		return next;
 	}
 
@@ -94,9 +97,22 @@ public class DivideAndConquerAlgorithms {
 	 * @return: Whether m is sorted in decreasing order or not.  
 	 */	
 	public boolean isReverse(MyList<Integer> m){
+		boolean res = false;
+		int keep = 0;
 		
+		if (m.length() == 0) return false;
+		if (m.length() == 1) res = true;
+		else {
+			if ( m.getElement(m.length()-1) < m.getElement(m.length()-2) ){
+				keep = m.getElement(m.length()-1);
+				m.removeElement(m.length() - 1);
+				res = isReverse(m);
+			}
+			else res = false;
+		}
+		m.addElement(m.length(), keep);
+		return res;
 			 // TO-DO
-		return true;
 	}
 
 	//-------------------------------------------------------------------
@@ -110,12 +126,13 @@ public class DivideAndConquerAlgorithms {
 	 */	
 	public int getNumAppearances(MyList<Integer> m, int n){
 			 // TO-DO
-		int res;		
-		int next;	 
+		int res = 0;		
+		int next = 0;	 
 		if (m.length() == 0) return 0;
 		next = m.getElement(m.length()-1);
 		m.removeElement(m.length()-1);
 		res = getNumAppearances(m, n);
+		m.addElement(m.length(), next);
 		if (n == next) res++;
 		return res;
 	}
